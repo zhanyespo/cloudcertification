@@ -1,25 +1,35 @@
 import tkinter as tk
+from tkinter import filedialog, messagebox
 import pandas as pd
 
 class QuizApp:
-    def __init__(self, root, file_path):
+    def __init__(self, root):
         self.root = root
         self.root.title("Quiz App")
         self.root.geometry("600x600")
         self.root.resizable(False, False)
 
-        # Load questions from the CSV file
-        self.questions = self.load_questions(file_path)
+        # Default file path
+        self.default_file_path = "data/Enhanced_Question_Bank_with_Unique_Answers.csv"
+        self.file_path = self.default_file_path
+
+        # Variables
+        self.questions = []
         self.current_question_index = -1
         self.current_question = None
         self.score = 0
-        self.total_questions = len(self.questions)
+        self.total_questions = 0
         self.incorrect_questions = []
 
         # UI Elements
+        self.change_file_button = tk.Button(
+            root, text="Change Question Bank", font=("Arial", 10, "bold"), command=self.select_file
+        )
+        self.change_file_button.pack(pady=10)
+
         self.stats_label = tk.Label(
             root,
-            text=f"Total Questions: {self.total_questions} | Correct: 0 | Wrong: 0",
+            text=f"Total Questions: 0 | Correct: 0 | Wrong: 0",
             font=("Arial", 10, "bold"),
         )
         self.stats_label.pack(pady=5)
@@ -28,6 +38,15 @@ class QuizApp:
             root, text="", wraplength=580, font=("Arial", 12, "bold"), justify="center"
         )
         self.question_label.pack(pady=10)
+
+        self.ok_button = tk.Button(
+            root,
+            text="OK",
+            font=("Arial", 10, "bold"),
+            command=self.load_next_question,
+            state="disabled",
+        )
+        self.ok_button.pack(pady=10)
 
         self.options_frame = tk.Frame(root)
         self.options_frame.pack(pady=10)
@@ -53,20 +72,45 @@ class QuizApp:
         )
         self.result_label.pack(pady=10)
 
-        self.ok_button = tk.Button(
-            root,
-            text="OK",
-            font=("Arial", 10, "bold"),
-            command=self.load_next_question,
-            state="disabled",
-        )
-        self.ok_button.pack(pady=20)
+        # Load default question bank
+        self.load_default_questions()
 
-        # Load the first question
-        self.load_next_question()
+    def load_default_questions(self):
+        """Load the default question bank."""
+        try:
+            self.questions = self.load_questions(self.default_file_path)
+            self.total_questions = len(self.questions)
+            self.stats_label.config(
+                text=f"Total Questions: {self.total_questions} | Correct: 0 | Wrong: 0"
+            )
+            self.load_next_question()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load default questions: {e}")
+
+    def select_file(self):
+        """Open a file dialog to select the question bank CSV file."""
+        file_path = filedialog.askopenfilename(
+            title="Select Question Bank File",
+            filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*"))
+        )
+
+        if not file_path:
+            messagebox.showerror("Error", "No file selected!")
+            return
+
+        try:
+            self.questions = self.load_questions(file_path)
+            self.total_questions = len(self.questions)
+            self.file_path = file_path  # Update the current file path
+            self.stats_label.config(
+                text=f"Total Questions: {self.total_questions} | Correct: 0 | Wrong: 0"
+            )
+            self.load_next_question()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load questions: {e}")
 
     def load_questions(self, file_path):
-        """Load questions from the Enhanced CSV file."""
+        """Load questions from the selected CSV file."""
         df = pd.read_csv(file_path)
         questions = []
         for _, row in df.iterrows():
@@ -148,5 +192,5 @@ class QuizApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = QuizApp(root, "data/Enhanced_Question_Bank_with_Unique_Answers.csv")  # Updated to use the new CSV file
+    app = QuizApp(root)
     root.mainloop()

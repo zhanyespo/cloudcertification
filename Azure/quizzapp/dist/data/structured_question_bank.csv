@@ -1,0 +1,25 @@
+Question,Answer Options,Correct Answer & Explanation
+You need to create a partitioned table in an Azure Synapse Analytics dedicated SQL pool. How should you complete the Transact-SQL statement?,"A. CLUSTERED INDEX
+B. CREATE TABLE table1
+C. ID INTEGER
+D. DISTRIBUTION col1 VARCHAR(10)
+E. PARTITION col2 VARCHAR(10)
+F. PARTITION FUNCTION
+G. PARTITION SCHEME",Correct Answer: G. PARTITION SCHEME. Explanation: Partitioning is best managed using partition schemes for better scalability and performance.
+"A Data Engineer is given a set of 10,000 CSV documents stored in Azure Data Lake that hold rows of historic sales data that needs to be accessed in a one-off analysis process into an Azure Synapse Analytics. What is the preferred method to access the sales rows?","A. Import the sales rows in the Azure SQL Database using Azure Data Factory
+B. Import the sales rows in the Azure SQL Database using SQL Integration Services
+C. Access the sales rows using Polybase
+D. Access the sales rows using a linked service",Correct Answer: C. Access the sales rows using Polybase. Explanation: PolyBase enables direct querying of large datasets without needing full ingestion into a database.
+"You need to design an Azure Synapse Analytics dedicated SQL pool that meets the following requirements: Can return an employee record from a given point in time, Maintains the latest employee information, Minimizes query complexity. How should you model the employee data?","A. as a temporal table
+B. as a SQL graph table
+C. as a degenerate dimension table
+D. as a Type 2 slowly changing dimension (SCD) table",Correct Answer: A. as a temporal table. Explanation: Temporal tables track historical changes efficiently while maintaining ease of queryability.
+You need to output files from Azure Data Factory. Which file format should you use for each type of output?,"A. Avro
+B. GZip
+C. Parquet
+D. TXT
+E. JSON with a timestamp",Correct Answer: C. Parquet. Explanation: Parquet is a columnar storage format optimized for performance in big data scenarios.
+A company is migrating three on-premises Microsoft SQL Server databases to Azure. The company would like to minimize the cost of running the service in Azure. How should the Azure SQL Databases be implemented?,"A. Each having a set number of DTUs
+B. Database 3 as an Azure SQL Data Warehouse and databases 1 and 2 on an Azure SQL VM
+C. Convert database 3 to an Azure Data Lake (Gen 2) and databases 1 and 2 as Cosmos DB
+D. Implement all as Azure SQL Databases included in a single elastic pool",Correct Answer: D. Implement all as Azure SQL Databases included in a single elastic pool. Explanation: Elastic pools optimize resource utilization and cost efficiency for databases with variable workloads.
